@@ -63,7 +63,7 @@ class WithDrawDetailParam: BaseParam{
     var wid = ""
 }
 
-class UpdateParam: BaseModel{
+class UpdateParam: BaseParam{
     var appName = ""
     var newAppSize = 0
     var newAppVersionCode: Double = 0

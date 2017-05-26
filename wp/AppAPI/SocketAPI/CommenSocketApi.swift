@@ -14,7 +14,6 @@ class CommenSocketApi: BaseSocketAPI, CommenApi {
         startRequest(SocketDataPacket.init(opcode: .imageToken, type:SocketConst.type.error), complete: complete, error: error)
     }
     
-    //错误
     func errorCode(complete: CompleteBlock?, error:ErrorBlock?){
         startRequest(SocketDataPacket.init(opcode: .errorCode), complete: complete, error: error)
     }
@@ -34,15 +33,9 @@ class CommenSocketApi: BaseSocketAPI, CommenApi {
         startRequest(packet, complete: complete, error: error)
     }
     
-    //版本更新提醒
     func update(type: Int, complete: CompleteBlock?, error: ErrorBlock?){
-        let packet: SocketDataPacket = SocketDataPacket.init(opcode: .update, dict: ["ttype": type as AnyObject], type: .user)
-        startModelRequest(packet, modelClass: UpdateParam.self, complete: complete, error: error)
-    }
-  
-    //心跳包
-    func heartBeat(complete: CompleteBlock?, error: ErrorBlock?){
-        let packet: SocketDataPacket = SocketDataPacket.init(opcode: .heart, model: BaseParam(), type: .user)
+        let packet: SocketDataPacket = SocketDataPacket.init(opcode: .update, dict: [SocketConst.Key.type: type as AnyObject], type: .user)
         startRequest(packet, complete: complete, error: error)
     }
+  
 }

@@ -45,15 +45,13 @@ class RegisterVC: BaseTableViewController {
         SVProgressHUD.dismiss()
     }
     //MARK: --DATA
+
+    
     //获取验证码
     @IBAction func changeCodePicture(_ sender: UIButton) {
         if checkoutText(){
-            var type = 0
+            let type = 0
             SVProgressHUD.showProgressMessage(ProgressMessage: "请稍候...")
-            if UserModel.share().registerType == .wechatPass {
-                type = 2
-            }
-            sender.isEnabled = false
             AppAPIHelper.commen().verifycode(verifyType: Int64(type), phone: phoneText.text!, complete: { [weak self](result) -> ()? in
                 SVProgressHUD.dismiss()
                 if let strongSelf = self{
@@ -69,11 +67,7 @@ class RegisterVC: BaseTableViewController {
                     strongSelf.timer = Timer.scheduledTimer(timeInterval: 1, target: strongSelf, selector: #selector(strongSelf.updatecodeBtnTitle), userInfo: nil, repeats: true)
                 }
                 return nil
-                }, error: { (error) in
-                    sender.isEnabled = true
-                    SVProgressHUD.showErrorMessage(error: error, duration: 2, complete: nil)
-                    return nil
-            })
+            }, error: errorBlockFunc())
         }
     }
     func updatecodeBtnTitle() {
@@ -82,7 +76,6 @@ class RegisterVC: BaseTableViewController {
             codeBtn.setTitle("重新发送", for: .normal)
             codeTime = 60
             timer?.invalidate()
-            timer = nil
             codeBtn.dk_backgroundColorPicker = DKColorTable.shared().picker(withKey: AppConst.Color.main)
             return
         }
@@ -95,7 +88,7 @@ class RegisterVC: BaseTableViewController {
     //注册
     @IBAction func registerBtnTapped(_ sender: Any) {
         if checkoutText(){
-            if checkTextFieldEmpty([phoneText,pwdText,codeText,memberText,agentText]){
+            if checkTextFieldEmpty([phoneText,pwdText,codeText]){
                 UserModel.share().code = codeText.text
                 UserModel.share().phone = phoneText.text
                 register()

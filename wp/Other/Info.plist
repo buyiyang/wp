@@ -6,6 +6,8 @@
 	<string>zh_CN</string>
 	<key>CFBundleDisplayName</key>
 	<string>航投宝</string>
+	<key>CFBundleDocumentTypes</key>
+	<array/>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -29,7 +31,7 @@
 			<string>wechat</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>wx50f63126dc726c9c</string>
+				<string>wx9dc39aec13ee3158</string>
 			</array>
 		</dict>
 		<dict>
@@ -44,7 +46,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>20170520</string>
+	<string>201705082201</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>

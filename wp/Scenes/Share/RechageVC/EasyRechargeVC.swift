@@ -33,14 +33,7 @@ class EasyRechargeVC: BaseTableViewController, UITextFieldDelegate {
         super.viewWillAppear(animated)
         if haveRecharge{
             showRechargeResultAlter()
-        }else{
-            countText.becomeFirstResponder()
         }
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        view.endEditing(false)
     }
     
     override func viewDidLoad() {
@@ -52,7 +45,7 @@ class EasyRechargeVC: BaseTableViewController, UITextFieldDelegate {
     //userInfo
     func initUserInfo() {
         uidText.text = UserModel.share().currentUser?.phone
-        balanceText.text = "\(String.moneyString(money: UserModel.share().balance))元"
+        balanceText.text = "\(UserModel.share().balance)元"
         submitText.layer.cornerRadius = 5
         submitText.dk_backgroundColorPicker = DKColorTable.shared().picker(withKey: AppConst.Color.main)
         let closeKeyboard = UITapGestureRecognizer.init(target: self, action: #selector(tableCloseKeyboard))
@@ -95,7 +88,12 @@ class EasyRechargeVC: BaseTableViewController, UITextFieldDelegate {
     }
     
     func openURL(urlStr: String) {
-      
+//        let webController = WPWebViewController()
+//        webController.title = "充值"
+//        _ = navigationController?.pushViewController(webController, animated: true)
+//        let baseUrl = URL.init(string: urlStr)
+//        webController.webView.loadRequest(URLRequest.init(url: baseUrl!))
+//      
         UserModel.share().qrcodeStr = urlStr
         let platform = rechargeType == .alipay ? "支付宝":"微信"
         UserModel.share().qrcodeTitle  = "长按二维码保存到相册,然后打开\(platform)进行充值"
@@ -120,7 +118,7 @@ class EasyRechargeVC: BaseTableViewController, UITextFieldDelegate {
     
     //MARK: - textField delegate
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if textField == rechargeTypeText || textField == uidText{
+        if textField == rechargeTypeText {
             return false
         }
         let resultStr = textField.text?.replacingCharacters(in: (textField.text?.range(from: range))!, with: string)
@@ -141,9 +139,6 @@ class EasyRechargeVC: BaseTableViewController, UITextFieldDelegate {
             })
             actionController.addAction(wechatAction)
             present(actionController, animated: true, completion: nil)
-            return false
-        }
-        if textField == uidText{
             return false
         }
         return true

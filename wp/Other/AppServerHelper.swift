@@ -31,24 +31,20 @@ class AppServerHelper: NSObject , WXApiDelegate{
     
     //查询是否有新版本更新
     func checkUpdate() {
-        let versionCode = Bundle.main.infoDictionary![AppConst.BundleInfo.CFBundleVersion.rawValue] as! String
-        
+        print(UIDevice.current.systemVersion)
         AppAPIHelper.commen().update(type: 0, complete: { result in
             if let param = result as? UpdateParam{
-                if param.newAppVersionCode < Double(versionCode)!{
-                    return nil
-                }
-                param.haveUpate = true
+                param.haveUpate = Double(param.newAppVersionName)! > Double(UIDevice.current.systemVersion)!
                 UserModel.share().updateParam = param
-                NotificationCenter.default.post(name: NSNotification.Name(rawValue: AppConst.NoticeKey.updateSoftware.rawValue), object: nil)
             }
             return nil
         }, error: nil)
     }
     
+    
     //MARK: --Wechat
     fileprivate func wechat() {
-        WXApi.registerApp(AppConst.WechatKey.Appid)
+        WXApi.registerApp("wx9dc39aec13ee3158")
     }
     func onResp(_ resp: BaseResp!) {
         //微信登录返回
@@ -75,6 +71,7 @@ class AppServerHelper: NSObject , WXApiDelegate{
                      "code" : code,
                      SocketConst.Key.secret : AppConst.WechatKey.Secret,
                      SocketConst.Key.grant_type : "authorization_code"]
+    
         Alamofire.request(AppConst.WechatKey.AccessTokenUrl, method: .get, parameters: param).responseJSON { [weak self](result) in
             if let resultJson = result.result.value as? [String: AnyObject] {
                 if let errCode = resultJson["errcode"] as? Int{
@@ -109,6 +106,4 @@ class AppServerHelper: NSObject , WXApiDelegate{
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: AppConst.WechatKey.ErrorCode), object: nil, userInfo:nil)
         }
     }
-    
-
 }

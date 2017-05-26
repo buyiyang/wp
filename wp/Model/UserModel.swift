@@ -33,8 +33,6 @@ class UserModel: BaseModel  {
     var wechatUserInfo: [String: String] = [:]
     var qrcodeStr = ""
     var qrcodeTitle = ""
-    var ipStr = ""
-    var portStr = ""
     var updateParam = UpdateParam()
     
     // 获取某个用户信息
@@ -85,7 +83,6 @@ class UserModel: BaseModel  {
     
     //更新realm
     func updateRealm(){
-    
         let buildNumber = Bundle.main.infoDictionary?[AppConst.BundleInfo.CFBundleVersion.rawValue]
         var config = Realm.Configuration()
         config.fileURL = config.fileURL!.deletingLastPathComponent().appendingPathComponent("\(UserModel.share().currentUserId).realm")
